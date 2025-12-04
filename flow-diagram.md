@@ -1,30 +1,25 @@
-# 📊 LogStream AI: Data Flow Architecture
-
-This diagram represents the high-throughput ingestion pipeline, demonstrating how data moves from the source to the dashboard.
-
-```mermaid
 graph TD
     %% Nodes
-    Client[🚀 Traffic Simulator]
-    API[⚙️ Ingestion API (Node/Express)]
-    Queue[📦 Redis Queue (BullMQ)]
-    Worker[👷 Worker Service]
-    DB[(🍃 MongoDB)]
-    Dashboard[💻 Next.js Dashboard]
+    Client["🚀 Traffic Simulator"]
+    API["⚙️ Ingestion API (Node/Express)"]
+    Queue["📦 Redis Queue (BullMQ)"]
+    Worker["👷 Worker Service"]
+    DB[("🍃 MongoDB")]
+    Dashboard["💻 Next.js Dashboard"]
 
     %% Flows
-    Client -->|HTTP POST /api/logs| API
-    API -->|Validate & Enqueue Job| Queue
+    Client -->|"HTTP POST /api/logs"| API
+    API -->|"Validate & Enqueue Job"| Queue
     
     subgraph "Async Processing"
-    Queue -->|Pull Job| Worker
-    Worker -->|Buffer 50 Logs| Worker
-    Worker -->|Batch Write (insertMany)| DB
+    Queue -->|"Pull Job"| Worker
+    Worker -->|"Buffer 50 Logs"| Worker
+    Worker -->|"Batch Write (insertMany)"| DB
     end
 
     subgraph "Observability"
-    Dashboard -->|Server Action Query| DB
-    Dashboard -->|Render Charts & Tables| Client
+    Dashboard -->|"Server Action Query"| DB
+    Dashboard -->|"Render Charts & Tables"| Client
     end
 
     %% Styling
