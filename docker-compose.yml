@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # 1. Redis: The high-speed queue
+  # Redis
   redis:
     image: redis:alpine
     container_name: logstream_redis
@@ -9,12 +9,12 @@ services:
       - "6379:6379"
     restart: always
 
-  # 2. MongoDB: The database
+  # MongoDB (Docker)
   mongo:
     image: mongo:latest
     container_name: logstream_mongo
     ports:
-      - "27017:27017"
+      - "27018:27017"  # <--- CHANGED THIS: External 27018 -> Internal 27017
     volumes:
       - mongo_data:/data/db
     restart: always
