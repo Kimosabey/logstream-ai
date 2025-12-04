@@ -1,28 +1,32 @@
+# 📊 System Architecture
+
+```mermaid
 graph TD
     %% Nodes
-    Client["🚀 Traffic Simulator"]
-    API["⚙️ Ingestion API (Node/Express)"]
-    Queue["📦 Redis Queue (BullMQ)"]
-    Worker["👷 Worker Service"]
+    Client("🚀 Traffic Simulator")
+    API("⚙️ Ingestion API")
+    Queue("📦 Redis Queue")
+    Worker("👷 Worker Service")
     DB[("🍃 MongoDB")]
-    Dashboard["💻 Next.js Dashboard"]
+    Dashboard("💻 Next.js Dashboard")
 
     %% Flows
-    Client -->|"HTTP POST /api/logs"| API
-    API -->|"Validate & Enqueue Job"| Queue
+    Client -->|"POST /api/logs"| API
+    API -->|"Validate & Enqueue"| Queue
     
-    subgraph "Async Processing"
+    subgraph Async_Processing
     Queue -->|"Pull Job"| Worker
-    Worker -->|"Buffer 50 Logs"| Worker
-    Worker -->|"Batch Write (insertMany)"| DB
+    Worker -->|"Buffer Batch"| Worker
+    Worker -->|"Insert Many"| DB
     end
 
-    subgraph "Observability"
-    Dashboard -->|"Server Action Query"| DB
-    Dashboard -->|"Render Charts & Tables"| Client
+    subgraph Observability
+    Dashboard -->|"Query Data"| DB
+    Dashboard -->|"Live Updates"| Client
     end
 
     %% Styling
-    style Client fill:#f9f,stroke:#333,stroke-width:2px
-    style Queue fill:#ff9,stroke:#333,stroke-width:2px
-    style DB fill:#9f9,stroke:#333,stroke-width:2px
+    style Client fill:#f9f,stroke:#333
+    style Queue fill:#ff9,stroke:#333
+    style DB fill:#9f9,stroke:#333
+```
