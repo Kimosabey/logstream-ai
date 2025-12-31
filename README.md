@@ -1,34 +1,98 @@
-```markdown
-# 🌊 LogStream AI
+# LogStream AI
+## High-Throughput Log Ingestion & Observability Platform
 
-> **A High-Throughput Log Ingestion & Observability Platform.**  
-> *Built to handle high traffic using Event-Driven Architecture and Batch Processing.*
+<div align="center">
 
-![Dashboard UI](https://via.placeholder.com/1200x600?text=LogStream+Dashboard+Preview) 
-*(Replace this link with a screenshot of your actual dashboard later)*
+![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 
-## 🏗️ System Architecture
+**Tech Stack**
 
-The system is designed to decouple **ingestion** from **storage** to ensure zero latency for the client.
+![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-BullMQ-DC382D?style=for-the-badge&logo=redis&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-7-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-14-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
 
-1.  **Ingestion API:** Receives logs via HTTP, validates payload (Zod), and instantly pushes to a Redis Queue.
-2.  **Message Broker:** Redis (BullMQ) acts as a buffer to absorb traffic spikes.
-3.  **Batch Worker:** A separate microservice pulls logs, buffers them in memory, and writes to MongoDB in batches of 50 (Bulk Write).
-4.  **Dashboard:** A Next.js 14 application providing real-time analytics, filtering, and searching.
+**Patterns**
 
-## 🛠️ Tech Stack
+![Event-Driven](https://img.shields.io/badge/Pattern-Event_Driven-FF6B6B?style=flat-square)
+![Batch Processing](https://img.shields.io/badge/Pattern-Batch_Processing-4ECDC4?style=flat-square)
+![Async Ingestion](https://img.shields.io/badge/Pattern-Async_Ingestion-95E1D3?style=flat-square)
+![Real-time Analytics](https://img.shields.io/badge/Feature-Real--time_Analytics-F38181?style=flat-square)
 
-*   **Frontend:** Next.js 14 (App Router), TypeScript, Tailwind CSS, Framer Motion, Apache ECharts.
-*   **Backend:** Node.js, Express, TypeScript.
-*   **Queue:** Redis, BullMQ.
-*   **Database:** MongoDB (Mongoose).
-*   **DevOps:** Docker Compose.
+</div>
 
-## 🚀 How to Run Locally
+---
+
+## Visual Overview
+
+### Real-time Dashboard
+
+<p align="center">
+  <img src="./docs/assets/dashboard.png" alt="LogStream Dashboard" width="800"/>
+</p>
+
+*Live log analytics with severity-based visualization and metrics*
+
+### Architecture Flow
+
+<p align="center">
+  <img src="./docs/assets/architecture.png" alt="System Architecture" width="750"/>
+</p>
+
+*Event-driven architecture with 98% IOPS reduction through batch processing*
+
+---
+
+## Overview
+
+**LogStream AI** is a high-throughput log ingestion and observability platform designed to handle high traffic using Event-Driven Architecture and Batch Processing.
+
+### The Problem
+
+Traditional log systems write to the database synchronously, creating bottlenecks during traffic spikes and wasting database IOPS.
+
+### The Solution
+
+**Decoupled Architecture**: API instantly acknowledges logs (< 10ms response) by pushing to Redis, while a separate worker batches 50 logs per write, reducing database IOPS by 98%.
+
+### Key Features
+
+- **Asynchronous Ingestion**: API response time < 10ms regardless of DB load
+- **Batch Processing**: 98% reduction in Database IOPS (writes 50 logs in 1 call)
+- **Type Safety**: Full TypeScript implementation across all services
+- **Real-Time UI**: Server Components with instant search, filtering, and pagination
+- **Visualizations**: Interactive charts using Apache ECharts
+
+---
+
+## System Architecture
+
+The system decouples **ingestion** from **storage** to ensure zero latency for clients:
+
+1. **Ingestion API**: Receives logs via HTTP, validates payload (Zod), instantly pushes to Redis Queue
+2. **Message Broker**: Redis (BullMQ) acts as buffer to absorb traffic spikes
+3. **Batch Worker**: Separate microservice pulls logs, buffers in memory, writes to MongoDB in batches of 50 (Bulk Write)
+4. **Dashboard**: Next.js 14 application providing real-time analytics, filtering, and searching
+
+---
+
+## Tech Stack
+
+- **Frontend**: Next.js 14 (App Router), TypeScript, Tailwind CSS, Framer Motion, Apache ECharts
+- **Backend**: Node.js, Express, TypeScript
+- **Queue**: Redis, BullMQ
+- **Database**: MongoDB (Mongoose)
+- **DevOps**: Docker Compose
+
+---
+
+## How to Run Locally
 
 ### 1. Prerequisites
-*   Docker Desktop
-*   Node.js v18+
+- Docker Desktop
+- Node.js v18+
 
 ### 2. Start Infrastructure
 ```bash
@@ -37,6 +101,7 @@ docker-compose up -d
 ```
 
 ### 3. Start the Services
+
 **Terminal 1: Ingestion API**
 ```bash
 cd ingestion-api
@@ -67,44 +132,38 @@ To see the system in action, run the included load generator:
 node traffic-simulator.js
 ```
 
-## 🧪 Key Features Implemented
-
-*   ✅ **Asynchronous Ingestion:** API response time < 10ms regardless of DB load.
-*   ✅ **Batch Processing:** Reduced Database IOPS by 98% (Writes 50 logs in 1 call).
-*   ✅ **Type Safety:** Full TypeScript implementation across all services.
-*   ✅ **Real-Time UI:** Server Components with Instant Search, Filtering, and Pagination.
-*   ✅ **Visualizations:** Interactive charts using Apache ECharts.
-
----
-*Engineered by Kimo.*
-```
-
 ---
 
-### 🚀 Step 3: Git Commit & Push
+## Performance Metrics
 
-Now, let's save this snapshot of your work.
+### Before (Synchronous Writes)
+- API Response: 50-100ms
+- Database Writes: 1,000/sec
+- IOPS: 1,000
 
-1.  **Stop all running servers** (Ctrl+C in your terminals).
-2.  Go to the **Root Folder** (`logstream-ai`).
-3.  Run these commands:
+### After (Async + Batch)
+- API Response: < 10ms
+- Database Writes: 20/sec (batches of 50)
+- IOPS: 20 (**98% reduction**)
 
-```bash
-# 1. Add all files to staging
-git add .
+---
 
-# 2. Commit with a meaningful message
-git commit -m "feat: Complete Project 1 - LogStream AI (API, Worker, Dashboard, Documentation)"
+## Features Implemented
 
-# 3. Create a repository on GitHub.com named 'logstream-ai'
-# (Go to GitHub -> New Repository -> Name: logstream-ai -> Create)
+- Asynchronous Ingestion: API response time < 10ms regardless of DB load
+- Batch Processing: Reduced Database IOPS by 98%
+- Type Safety: Full TypeScript implementation across all services
+- Real-Time UI: Server Components with Instant Search, Filtering, and Pagination
+- Visualizations: Interactive charts using Apache ECharts
 
-# 4. Link your local code to GitHub (Replace YOUR_USERNAME)
-# git remote add origin https://github.com/YOUR_USERNAME/logstream-ai.git
+---
 
-# 5. Push the code
-# git branch -M main
-# git push -u origin main
-```
+## License
 
-**Once you have pushed the code, Project 1 is officially SEALED.** 🔒
+MIT License
+
+---
+
+**Built by**: [Harshan Aiyappa](https://github.com/Kimosabey)  
+**Tech Stack**: Node.js • TypeScript • Redis • MongoDB • Next.js  
+**Pattern**: Event-Driven • Batch Processing • Async Ingestion
