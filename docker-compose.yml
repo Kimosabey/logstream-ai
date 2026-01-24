@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  # Redis
+  redis:
+    image: redis:alpine
+    container_name: logstream_redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  # MongoDB (Docker)
+  mongo:
+    image: mongo:latest
+    container_name: logstream_mongo
+    ports:
+      - "27018:27017"  # <--- CHANGED THIS: External 27018 -> Internal 27017
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+
+volumes:
+  mongo_data:                                                                                 

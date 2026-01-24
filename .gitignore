@@ -1,0 +1,125 @@
+# ======================
+# Next.js / React
+# ======================
+.next/
+out/
+build/
+dist/
+.next/cache/
+
+# Turbopack
+.turbo/
+
+# Static export
+export/
+
+# ======================
+# Node.js
+# ======================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Logs
+logs/
+*.log
+*.stacktrace
+*.pid
+*.seed
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# ======================
+# OS files
+# ======================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# ======================
+# Editor / IDE
+# ======================
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swm
+
+# ======================
+# TypeScript
+# ======================
+*.tsbuildinfo
+
+# ======================
+# Testing
+# ======================
+coverage/
+.nyc_output/
+
+# Jest / Vitest
+jest.config.js
+jest.config.ts
+vitest.config.ts
+
+# ======================
+# Temporary files
+# ======================
+tmp/
+temp/
+*.tmp
+*.temp
+
+# ======================
+# Next.js images cache
+# ======================
+public/static/
+public/images/cache/
+
+# ======================
+# PM2 (if using)
+# ======================
+pids
+pms.json
+*.pid
+
+# ======================
+# Storybook (if using)
+# ======================
+.storybook-out/
+storybook-static/
+
+# ======================
+# Lint / Prettier
+# ======================
+.eslintcache
+.prettier-cache
+
+# ======================
+# Misc
+# ======================
+*.orig
+*.bak
+*.backup
+*.swp
+*.log
