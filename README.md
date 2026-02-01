@@ -2,61 +2,74 @@
 
 ![Thumbnail](docs/assets/thumbnail.png)
 
-## High-Throughput Log Ingestion & Observability Platform
+## High-Throughput Log Ingestion & Observability with Redis Shock-Absorber
 
 <div align="center">
 
 ![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
-![Node.js](https://img.shields.io/badge/Tech-Node.js_Event_Driven-339933?style=for-the-badge)
+![Pattern](https://img.shields.io/badge/Architecture-Shock_Absorber-FFD700?style=for-the-badge&logo=redis&logoColor=black)
 
 </div>
 
-**LogStream AI** is an enterprise-grade log ingestion system designed to handle **10,000+ requests per second** using an event-driven "Shock Absorber" architecture. It decouples ingestion from storage to guarantee **<10ms latency** for clients while protecting the database from write surges.
+**LogStream AI** is an enterprise-grade log ingestion platform designed to handle **10,000+ logs per second**. It utilizes a "Shock Absorber" architecture with **Redis (BullMQ)** to decouple high-concurrency ingestion from slow database writes, guaranteeing **<10ms latency** for applications while ensuring zero data loss during traffic spikes.
 
 ---
 
 ## 🚀 Quick Start
 
-Get the system running in 3 commands:
+Launch the observability stack (Redis + MongoDB + Dashboard) in one command:
 
 ```bash
-# 1. Start Infrastructure (Redis & MongoDB)
+# 1. Start Infrastructure
 docker-compose up -d
 
-# 2. Install Dependencies (Root)
-npm install
-
-# 3. Start All Services (Concurrent)
-npm run start:all 
-# (Or start each service in separate terminals as detailed in GETTING_STARTED.md)
+# 2. Start Services (Ingestion + Worker + UI)
+npm install && npm run start:all
 ```
 
-> **Detailed Setup**: See [GETTING_STARTED.md](./docs/GETTING_STARTED.md) for full instructions.
+> **Detailed Setup**: See [GETTING_STARTED.md](./docs/GETTING_STARTED.md).
 
 ---
 
 ## 📸 Demo & Architecture
 
-### Real-time Dashboard
+### Real-Time Log Dashboard
 ![Dashboard](docs/assets/dashboard.png)
-*Live log analytics with severity-based visualization*
+*Live log analytics with severity-based visualization and instant search.*
 
 ### System Architecture
 ![Architecture](docs/assets/architecture.png)
-*Event-driven flows with batch processing*
+*Event-Driven Pipeline: API -> Redis (Buffer) -> Worker (Batch) -> MongoDB.*
 
-> **Deep Dive**: See [ARCHITECTURE.md](./docs/ARCHITECTURE.md) for High-Level & Low-Level Design.
+### The Ingestion Journey
+![Workflow](docs/assets/workflow.png)
+*Scaling to 10k RPS: How BullMQ manages the ingestion spike.*
+
+> **Deep Dive**: See [ARCHITECTURE.md](./docs/ARCHITECTURE.md) for the BullMQ and Batching logic.
 
 ---
 
 ## ✨ Key Features
 
-*   **⚡ Zero-Latency Ingestion**: API offloads requests to Redis in **< 10ms**.
-*   **🛡️ Robust Reliability**: "Shock Absorber" pattern handles sudden traffic spikes without data loss.
-*   **📉 Database Optimization**: Batch processing reduces Database IOPS by **98%**.
-*   **📊 Live Observability**: Real-time Next.js dashboard with instant search and filtering.
-*   **🛡️ Type Safety**: Full TypeScript implementation with Zod validation.
+*   **⚡ Sub-10ms Ingestion**: Redis-backed write paths ensure the client never waits for DB operations.
+*   **🛡️ Shock Absorber Pattern**: BullMQ manages high-volume bursts, preventing MongoDB saturation.
+*   **📉 98% IOPS Reduction**: Intelligent batching logic writes thousands of logs in single bulk operations.
+*   **📊 Live Search**: Instant Next.js log viewer with severity filtering and timestamp sorting.
+*   **🐳 Fully Containerized**: One-click deployment for local and cloud infrastructure.
+
+---
+
+## 🏗️ The Protective Journey
+
+How a log entry is handled under extreme load:
+
+1.  **Emit**: App sends a log via POST to the LogStream API.
+2.  **Queue**: API instantly pushes the log to **Redis (BullMQ)** and returns HTTP 202.
+3.  **Buffer**: Logs accumulate in the high-speed Redis memory buffer.
+4.  **Batch**: The background worker wakes up after 500ms or 1000 logs.
+5.  **Persist**: A single bulk write operation commits the batch to **MongoDB**.
+6.  **Broadcast**: Real-time updates are pushed to the dashboard via WebSockets/Actions.
 
 ---
 
@@ -64,29 +77,35 @@ npm run start:all
 
 | Document | Description |
 | :--- | :--- |
-| [**System Architecture**](./docs/ARCHITECTURE.md) | High-Level Design, Schema, and Tech Decisions. |
-| [**Getting Started**](./docs/GETTING_STARTED.md) | Setup guide, environment variables, and scripts. |
-| [**Failure Scenarios**](./docs/FAILURE_SCENARIOS.md) | Analysis of resilience and fault tolerance. |
-| [**Interview Q&A**](./docs/INTERVIEW_QA.md) | "Senior Signal" answers for recruiters. |
+| [**System Architecture**](./docs/ARCHITECTURE.md) | Redis patterns, BullMQ config, and Batching math. |
+| [**Getting Started**](./docs/GETTING_STARTED.md) | Local installation, Environment, and Benchmark scripts. |
+| [**Failure Scenarios**](./docs/FAILURE_SCENARIOS.md) | Handling Redis OOM, Worker crash, and DB recovery. |
+| [**Interview Q&A**](./docs/INTERVIEW_QA.md) | "Why Redis over direct DB?", "How to scale BullMQ?". |
 
 ---
 
 ## 🔧 Tech Stack
 
-| Domain | Technology | Use Case |
+| Component | Technology | Role |
 | :--- | :--- | :--- |
-| **Runtime** | **Node.js** | Async I/O for high throughput. |
-| **Broker** | **Redis (BullMQ)** | In-memory buffering and queue management. |
-| **Storage** | **MongoDB** | Schema-less document storage for logs. |
-| **Frontend** | **Next.js 14** | Real-time dashboard with Server Actions. |
+| **Ingestion API**| **Node.js (Express)** | Fast, non-blocking log intake. |
+| **Worker Engine**| **TypeScript** | BullMQ Processor & Batch logic. |
+| **Message Bus** | **Redis** | The "Shock Absorber" buffer. |
+| **Storage** | **MongoDB** | Schema-less log repository. |
+| **Dashboard** | **Next.js 14** | Real-time observability UI. |
 
 ---
 
 ## 👤 Author
 
 **Harshan Aiyappa**  
-Senior Full-Stack Hybrid Engineer  
-[GitHub Profile](https://github.com/Kimosabey)
+Senior Full-Stack Hybrid AI Engineer  
+Voice AI • Distributed Systems • Infrastructure
+
+[![Portfolio](https://img.shields.io/badge/Portfolio-kimo--nexus.vercel.app-00C7B7?style=flat&logo=vercel)](https://kimo-nexus.vercel.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-Kimosabey-black?style=flat&logo=github)](https://github.com/Kimosabey)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Harshan_Aiyappa-blue?style=flat&logo=linkedin)](https://linkedin.com/in/harshan-aiyappa)
+[![X](https://img.shields.io/badge/X-@HarshanAiyappa-black?style=flat&logo=x)](https://x.com/HarshanAiyappa)
 
 ---
 
