@@ -1,4 +1,4 @@
-# 🎤 Interview Cheat Sheet: LogStream AI
+# 🎓 Interview Q&A: LogStream AI
 
 > **Purpose**: Use this guide to answer specific questions about the project during technical interviews.
 

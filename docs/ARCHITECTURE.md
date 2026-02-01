@@ -1,8 +1,10 @@
-# 🏗️ System Architecture
+# 🏗️ System Architecture: LogStream AI
 
 ## 1. High-Level Design (HLD)
 
-The system is designed as an **Asynchronous Event-Driven Ingestion Pipeline**. It decouples the high-throughput ingestion layer from the storage layer using a message broker, ensuring zero-latency writes for clients and protecting the database fromwrite spikes.
+The system is designed as an **Asynchronous Event-Driven Ingestion Pipeline**. It decouples the high-throughput ingestion layer from the storage layer using a message broker, ensuring zero-latency writes for clients and protecting the database from write spikes.
+
+![Architecture Diagram](./assets/architecture.png)
 
 ```mermaid
 graph TD

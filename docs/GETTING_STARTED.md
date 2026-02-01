@@ -1,11 +1,12 @@
-# 🚀 Getting Started with LogStream AI
+# 🚀 Getting Started: LogStream AI
 
-> **Prerequisites**
-> *   **Docker Desktop** (for Redis)
-> *   **Node.js v18+** (LTS)
-> *   **MongoDB** (Local Service or Docker)
+> Step-by-step guide to local deployment and ingestion simulation.
 
-## 1. Environment Setup
+![Dashboard Preview](./assets/dashboard.png)
+
+---
+
+## 1. Prerequisites
 
 The project is pre-configured to work with defaults, but you can override settings in `.env`.
 

@@ -1,8 +1,10 @@
-# 🛡️ Failure Scenarios & Reliability Analysis
+# 🛡️ Failure Scenarios & Resilience: LogStream AI
 
-> "Everything fails, all the time." — Werner Vogels
+> Documenting component failure modes and the "Shock Absorber" safeguard.
 
-This document outlines how LogStream AI handles component failures and ensures data integrity.
+![System Workflow](./assets/workflow.png)
+
+---
 
 ## 1. Component Failure Matrix
 
