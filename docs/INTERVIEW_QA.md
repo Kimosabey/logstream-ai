@@ -28,7 +28,7 @@ This architecture reduces database pressure by **98%** (via batching) and ensure
 
 ---
 
-## 3. Tough Technical Questions (The "Senior Signal")
+## 3. Tough Technical Questions
 
 ### Q: Why did you choose Redis over Kafka?
 **A:** "For this specific scale (<10k TPS) and complexity, Redis (with BullMQ) offered the perfect balance. Kafka acts as a distributed log and is great for massive distinct consumer groups and replayability, but it introduces significant operational overhead (Zookeeper/Kraft, Partitions). Redis gave me the queuing primitives I needed (Lists/Streams) with sub-millisecond latency and much simpler setup, which was the right engineering trade-off for this scope."
